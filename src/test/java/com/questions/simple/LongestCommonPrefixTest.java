@@ -8,9 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import java.time.Duration;
-import java.time.Instant;
-
 public class LongestCommonPrefixTest {
 
     private LongestCommonPrefix longestCommonPrefix;
@@ -22,7 +19,7 @@ public class LongestCommonPrefixTest {
 
     @ParameterizedTest
     @DisplayName("LongestCommonPrefix should ")
-    @CsvSource(value = {"abcabcbb:3", "bbbbb:1", "pwwkew:3", "abcabcbbabcabcbbabcabcbb:3",":0"}, delimiter = ':')
+    @CsvSource(value = {"abcabcbb:3", "bbbbb:1", "pwwkew:3", "abcabcbbabcabcbbabcabcbb:3",":0", "' ':1"}, delimiter = ':')
     public void testLongestCommonPrefix(String input, int output){
         Assertions.assertEquals(output, this.longestCommonPrefix.lengthOfLongestSubstring(input));
     }
