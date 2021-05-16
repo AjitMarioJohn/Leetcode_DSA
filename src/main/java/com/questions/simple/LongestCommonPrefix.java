@@ -1,70 +1,54 @@
 package com.questions.simple;
 
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.function.IntFunction;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 public class LongestCommonPrefix {
-    String longestStr = "";
-    public int lengthOfLongestSubstring(String input) {
-        return this.longestSubstring.apply(input);
+
+    public String longestCommonPrefix(String[] strs) {
+        String smallestString = this.smallestStringFromArray.apply(strs);
+        return this.getLongestCommonPrefix.apply(strs, smallestString);
     }
 
-    private Function<String, Integer> longestSubstring = (str) -> Optional.ofNullable(str).map(this.uniqueSubstrings).orElse(Stream.empty()).max(Comparator.comparingInt(String::length)).orElse("").length();
-
-    private Function<String, Stream<String>> uniqueSubstrings = (str) -> {
-       final List<String> strList = new ArrayList<>();
-       str.chars().mapToObj(this.convertToString).forEach(indexStr -> {
-           if(this.containsStringInLongestString.test(indexStr)){
-                strList.add(longestStr);
-                longestStr = indexStr;
+    private BiFunction<String[], String, String> getLongestCommonPrefix = (strArr, smallestStr) -> Optional.ofNullable(strArr).map(arr -> {
+        AtomicReference<String> prefix = new AtomicReference<>("");
+        IntStream.range(0, smallestStr.length()).boxed().sorted(Collections.reverseOrder()).forEach( index -> {
+            String substring = smallestStr.substring(0, index);
+            AtomicBoolean contains = new AtomicBoolean(false);
+            Arrays.stream(arr).forEach(str -> {
+                contains.set(this.containsPrefix.test(substring, str));
+            });
+            if(contains.get()){
+                prefix.set(substring);
                 return;
             }
-            longestStr = longestStr+indexStr;
-       });
-       return strList.stream();
+        });
+        return Optional.ofNullable(prefix.get()).orElseGet(()->"");
+    }).orElseGet(()->"");
+
+    private Function<String[], String> smallestStringFromArray = (strArr) -> Optional.ofNullable(strArr).map(arr -> {
+        AtomicReference<String> smallStr = new AtomicReference<>("");
+        Arrays.stream(arr).forEach(str -> {
+            smallStr.set(this.smallestString.apply(str, smallStr.get()));
+        });
+        return smallStr.get();
+    }).orElseGet(()-> "");
+
+    private BiFunction<String, String, String> smallestString = (str1, str2) -> {
+        if(this.isSmallestString.test(str1,str2))
+            return str1;
+
+        return str2;
     };
 
-    private IntFunction<String> convertToString = num -> Character.toString((char)num);
+    private BiPredicate<String, String> isSmallestString = (str1, str2) -> str1.length() < str2.length();
 
-    private Predicate<String> containsStringInLongestString =  (str) -> longestStr.contains(str);
+    private BiPredicate<String, String> containsPrefix = (str1, str2) -> str2.contains(str1);
 }
-
-//        String longestStr = "";
-//        List<String> strList = new ArrayList<>();
-//
-//        for(int i=0; i<input.length(); i++){
-//            String indexStr = Character.toString(input.charAt(i));
-//            if(longestStr.contains(indexStr)){
-//                strList.add(longestStr);
-//                longestStr = indexStr;
-//                continue;
-//            }
-//
-//            longestStr = longestStr+indexStr;
-//        }
-//
-//        return strList.stream().max(Comparator.comparingInt(String::length)).get().length();
-//        Set<Character> charSet = new HashSet<>();
-//        String  currentLongestString = "";
-//        String  finalSubStr = "";
-//        for(int i=0;i<input.length();i++){
-//            Character c = input.charAt(i);
-//            if(charSet.contains(c)){
-//                currentLongestString = "";
-//                charSet.clear();
-//            }
-//            charSet.add(c); //wk
-//            currentLongestString = currentLongestString + c;
-//
-//            if(currentLongestString.length()>finalSubStr.length()){
-//                finalSubStr =  currentLongestString;
-//            }
-//        }
-//        return finalSubStr.length();
