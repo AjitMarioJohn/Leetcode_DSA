@@ -28,9 +28,9 @@ public class RomanToInteger {
 
     private Function<String,Integer> convertRomanToInt = (romanStr) -> Optional.ofNullable(romanStr).map(this.convert).orElse(0);
 
-    private Function<String, Integer> convert = (str) -> {
-        str.chars().
-    };
+//    private Function<String, Integer> convert = (str) -> {
+//        str.chars().
+//    };
 
     private IntFunction<String> convertIntToString = (value) -> Character.toString((char)value);
 
