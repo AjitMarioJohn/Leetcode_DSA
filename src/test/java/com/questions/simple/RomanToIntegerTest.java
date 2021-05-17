@@ -15,7 +15,7 @@ public class RomanToIntegerTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"III:3","IV:4","IX:9","LVIII:58", ":0"}, delimiter = ':')
+    @CsvSource(value = {"III:3","IV:4","IX:9","LVIII:58", ":0", "MCMXCIV:1994", "MCMXCIVMCMXCIVII:0"}, delimiter = ':')
     public void validateRomanToInt(String input, int output){
         Assertions.assertEquals(output, this.romanToInteger.romanToInt(input));
     }
