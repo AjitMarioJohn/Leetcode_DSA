@@ -8,12 +8,7 @@ import java.util.stream.IntStream;
 
 public class RomanToInteger {
 
-    private Map<String, Integer> romanToIntMapper;
     private int lastNum = 0;
-
-    public RomanToInteger() {
-        this.romanToIntMapper = this.initialize.get();
-    }
 
     public int romanToInt(String input) {
         return this.convertRomanToInt.apply(input);
@@ -29,7 +24,7 @@ public class RomanToInteger {
 
     private IntUnaryOperator resultantNumber = (value) -> {
         int lastCalcNum = this.lastNum;
-        int resultantNum = Optional.ofNullable(this.romanToIntMapper.get(this.convertIntToString.apply(value))).orElse(0);
+        int resultantNum = Optional.ofNullable(this.romanToIntMapper.get().get(this.convertIntToString.apply(value))).orElse(0);
         this.lastNum = resultantNum;
         if(this.isLastDigitGreater.test(lastCalcNum,resultantNum)){
             return -resultantNum;
@@ -39,7 +34,7 @@ public class RomanToInteger {
 
     private IntFunction<String> convertIntToString = (value) -> Character.toString((char) value);
 
-    private Supplier<Map<String, Integer>> initialize = () -> {
+    private Supplier<Map<String, Integer>> romanToIntMapper = () -> {
         Map<String, Integer> mapper = new HashMap<>();
         mapper.put("I", 1);
         mapper.put("V", 5);
