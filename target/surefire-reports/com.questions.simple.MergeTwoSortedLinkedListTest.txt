@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.questions.simple.MergeTwoSortedLinkedListTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0 s <<< FAILURE! - in com.questions.simple.MergeTwoSortedLinkedListTest
+testMergeTwoList{LinkedList, LinkedList, LinkedList}[3]  Time elapsed: 0 s  <<< ERROR!
+java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+	at com.questions.simple.MergeTwoSortedLinkedListTest.testMergeTwoList(MergeTwoSortedLinkedListTest.java:26)
+

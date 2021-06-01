@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: com.questions.simple.LongestSubstringWithoutRepeatingCharactersTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.183 s <<< FAILURE! - in com.questions.simple.LongestSubstringWithoutRepeatingCharactersTest
+testLongestCommonPrefix{String, int}[6]  Time elapsed: 0 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <1> but was: <0>
+	at com.questions.simple.LongestSubstringWithoutRepeatingCharactersTest.testLongestCommonPrefix(LongestSubstringWithoutRepeatingCharactersTest.java:24)
+
+testLongestCommonPrefixForNullAndEmpty{String}  Time elapsed: 0.016 s  <<< ERROR!
+org.junit.jupiter.api.extension.ParameterResolutionException: No ParameterResolver registered for parameter [java.lang.String arg0] in method [public void com.questions.simple.LongestSubstringWithoutRepeatingCharactersTest.testLongestCommonPrefixForNullAndEmpty(java.lang.String)].
+
