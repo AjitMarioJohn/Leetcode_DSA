@@ -6,36 +6,53 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.questions.simple.MergeTwoSortedLinkedList.ListNode;
+
 public class MergeTwoSortedLinkedListTest {
+    private static ListNode headNode;
+    private static ListNode prevNode;
     private MergeTwoSortedLinkedList obj;
 
-    private static Stream<Arguments> inputSource(){
-        return Stream.of(Arguments.of(new LinkedList<>(List.of(1, 2, 4)),
-                new LinkedList<>(List.of(1,3,4)),
-                new LinkedList<>(List.of(1,1,2,3,4,4))),
-                Arguments.of(new LinkedList<>(),
-                        new LinkedList<Integer>(),
-                        new LinkedList<Integer>()),
-                Arguments.of(new LinkedList<>(),
-                        new LinkedList<>(List.of(0)),
-                        new LinkedList<>(List.of(0))),
-                Arguments.of(new LinkedList<>(List.of(0)),
-                        new LinkedList<Integer>(),
-                        new LinkedList<>(List.of(0))));
+    public static Stream<Arguments> input() {
+        return Stream.of(
+                Arguments.of(createListNodeFromList(List.of(1, 2, 4)), createListNodeFromList(List.of(1, 3, 4)),  createListNodeFromList(List.of(1, 1, 2, 3, 4, 4))),
+                Arguments.of(createListNodeFromList(Collections.EMPTY_LIST), createListNodeFromList(List.of(0)),  createListNodeFromList(List.of(0))),
+                Arguments.of(createListNodeFromList(Collections.EMPTY_LIST), createListNodeFromList(Collections.EMPTY_LIST),  createListNodeFromList(Collections.EMPTY_LIST))
+        );
+    }
+
+    private static ListNode createListNodeFromList(List<Integer> list) {
+        if(list.isEmpty()){
+            return null;
+        }
+        headNode = new ListNode(list.get(0));
+        prevNode = headNode;
+        list.stream().skip(1).forEach(num -> {
+            ListNode node = new ListNode(num);
+            prevNode.next = node;
+            prevNode = node;
+        });
+        return headNode;
     }
 
     @BeforeEach
-    private void initialize(){
+    private void initialize() {
         obj = new MergeTwoSortedLinkedList();
     }
 
     @ParameterizedTest
-    @MethodSource(value = "inputSource")
-    public void testMergeTwoList(LinkedList<Integer> input_1, LinkedList<Integer> input_2, LinkedList<Integer> output){
-        Assertions.assertEquals(output, obj.mergeTwoList(input_1, input_2));
+    @MethodSource(value = "input")
+    public void testMergeTwoList(ListNode input1, ListNode input2, ListNode output) {
+        ListNode result = obj.mergeTwoLists(input1, input2);
+
+        while(result!=null && output!=null){
+            Assertions.assertEquals(output.val, result.val);
+            output = output.next;
+            result = result.next;
+        }
     }
 }

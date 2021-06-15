@@ -9,15 +9,7 @@ public class BubbleSort implements SortingAlgo {
         for (int index = input.length - 1; index >= 0; index--) {
             for (int innerIndex = 0; innerIndex < index; innerIndex++) {
                 if (input[innerIndex] > input[innerIndex+1]) {
-                    int firstNum = input[innerIndex];
-                    int secondNum = input[innerIndex+1];
-
-                    firstNum = firstNum^secondNum;
-                    secondNum = firstNum^secondNum;
-                    firstNum = firstNum^secondNum;
-
-                    input[innerIndex] = firstNum;
-                    input[innerIndex+1] = secondNum;
+                    swapIndexes(input, innerIndex, innerIndex+1);
                 }
             }
         }

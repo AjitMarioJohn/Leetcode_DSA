@@ -45,16 +45,23 @@ import java.util.function.BiFunction;
 
 public class SearchInsertPosition {
 
-    private final BiFunction<Integer, Integer, Integer> calcMiddleIndex = (low, high) -> (low + ((high-low)/2));
+    private final BiFunction<Integer, Integer, Integer> calcMiddleIndex = (low, high) -> (low + ((high - low) / 2));
 
     public int searchInsert(int[] input, int target) {
-        int low=0, middle=0, high = input.length-1;
-
-        if(input[low] > target || input[high] < target){
-            return 0;
+        if (target > input[input.length - 1]) {
+            return input.length;
+        }
+        int low = 0, high = input.length - 1, middle = 0;
+        while (low < high) {
+            middle = this.calcMiddleIndex.apply(low, high);
+            if (input[middle] < target) {
+                low = middle + 1;
+            } else {
+                high = middle;
+            }
         }
 
-        return 0;
+        return low;
     }
 
 }

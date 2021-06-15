@@ -1,54 +1,36 @@
 package com.questions.simple;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.IntStream;
+import java.util.function.Predicate;
 
 public class LongestCommonPrefix {
 
-    public String longestCommonPrefix(String[] strs) {
-        String smallestString = this.smallestStringFromArray.apply(strs);
-        return this.getLongestCommonPrefix.apply(strs, smallestString);
-    }
-
-    private BiFunction<String[], String, String> getLongestCommonPrefix = (strArr, smallestStr) -> Optional.ofNullable(strArr).map(arr -> {
-        AtomicReference<String> prefix = new AtomicReference<>("");
-        IntStream.range(0, smallestStr.length()).boxed().sorted(Collections.reverseOrder()).forEach( index -> {
-            String substring = smallestStr.substring(0, index);
-            AtomicBoolean contains = new AtomicBoolean(false);
-            Arrays.stream(arr).forEach(str -> {
-                contains.set(this.containsPrefix.test(substring, str));
-            });
-            if(contains.get()){
-                prefix.set(substring);
-                return;
-            }
-        });
-        return Optional.ofNullable(prefix.get()).orElseGet(()->"");
-    }).orElseGet(()->"");
-
-    private Function<String[], String> smallestStringFromArray = (strArr) -> Optional.ofNullable(strArr).map(arr -> {
-        AtomicReference<String> smallStr = new AtomicReference<>("");
-        Arrays.stream(arr).forEach(str -> {
-            smallStr.set(this.smallestString.apply(str, smallStr.get()));
-        });
-        return smallStr.get();
-    }).orElseGet(()-> "");
-
-    private BiFunction<String, String, String> smallestString = (str1, str2) -> {
-        if(this.isSmallestString.test(str1,str2))
-            return str1;
-
-        return str2;
+    private final Predicate<String[]> isValidArray = (arr) -> arr.length > 1;
+    private final BiPredicate<String, String> isItSelectedString = (selectedStr, str) -> selectedStr.equals(str);
+    private String longestPrefix = "";
+    private final Consumer<String> findLongestPrefix = (str) -> {
+        while (str.indexOf(longestPrefix) != 0) {
+            longestPrefix = longestPrefix.substring(0, longestPrefix.length() - 1);
+        }
     };
+private Function<String[], String> getStringAsPerArrLength = (strArr) -> strArr.length == 1 ? strArr[0] : longestPrefix;
+        private Function<String[], String> checkLongestPrefix = (strArr) -> {
+        if (this.isValidArray.negate().test(strArr)) {
+            return this.getStringAsPerArrLength.apply(strArr);
+        }
 
-    private BiPredicate<String, String> isSmallestString = (str1, str2) -> str1.length() < str2.length();
+        longestPrefix = strArr[0];
+        Arrays.stream(strArr).dropWhile(str -> this.isItSelectedString.test(longestPrefix, str))
+                .forEach(this.findLongestPrefix);
 
-    private BiPredicate<String, String> containsPrefix = (str1, str2) -> str2.contains(str1);
+        return longestPrefix;
+    };;
+
+    public String longestCommonPrefix(String[] strs) {
+        return Optional.ofNullable(strs).map(this.checkLongestPrefix).orElse("");
+    }
 }

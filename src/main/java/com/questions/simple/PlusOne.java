@@ -1,32 +1,47 @@
+/*
+Given a non-empty array of decimal digits representing a non-negative integer, increment one to the integer.
+
+The digits are stored such that the most significant digit is at the head of the list, and each element in the array contains a single digit.
+
+You may assume the integer does not contain any leading zero, except the number 0 itself.
+
+
+
+Example 1:
+
+Input: digits = [1,2,3]
+Output: [1,2,4]
+Explanation: The array represents the integer 123.
+Example 2:
+
+Input: digits = [4,3,2,1]
+Output: [4,3,2,2]
+Explanation: The array represents the integer 4321.
+Example 3:
+
+Input: digits = [0]
+Output: [1]
+
+
+Constraints:
+
+1 <= digits.length <= 100
+0 <= digits[i] <= 9
+*/
 package com.questions.simple;
-
-import java.util.function.*;
-
 public class PlusOne {
-
-    private Function<int[], Integer> incrementLastIndexNum = (arr) -> arr[arr.length - 1] + 1;
-    private BiFunction<int[], Integer, Function<Integer, int[]>> swapValueToDesiredPosition = (arr, value) -> position -> {
-        arr[position] = value;
-        return arr;
-    };
-    private BiFunction<int[], Integer, int[]> swapLastIndexValue = (arr, value) -> this.swapValueToDesiredPosition.apply(arr, value).apply(arr.length - 1);
-    private BiPredicate<Integer, Integer> isNumLessOrEqualToLimit = (num, limit) -> num <= limit;
-    private IntPredicate isNumLessThanOrEqualToNine = (num) -> this.isNumLessOrEqualToLimit.test(num, 9);
-    private Function<Integer, int[]> splitNumToArray = (num) -> Integer.toString(num).chars().map(c -> c - '0').toArray();
-    private Predicate<int[]> isMergingRequired = arr -> arr.length > 1;
-
     public int[] plusOne(int[] input) {
+        for(int i = input.length-1 ; i >=0; i--){
+            if(input[i] < 9){
+                input[i]++;
+                return input;
+            }
 
-        int incrementedNum = this.incrementLastIndexNum.apply(input);
-
-        if (this.isNumLessThanOrEqualToNine.test(incrementedNum)) {
-            return this.swapLastIndexValue.apply(input, incrementedNum);
+            input[i] = 0;
         }
 
-        if (this.isMergingRequired.negate().test(input)) {
-            return this.splitNumToArray.apply(incrementedNum);
-        }
-
-        return null;
+        int[] result = new int[input.length+1];
+        result[0] = 1;
+        return result;
     }
 }

@@ -24,43 +24,90 @@ Both l1 and l2 are sorted in non-decreasing order.
 */
 package com.questions.simple;
 
-import java.util.AbstractCollection;
-import java.util.LinkedList;
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public class MergeTwoSortedLinkedList {
-    private final BiFunction<LinkedList<Integer>, Integer, Integer> getNumberFromIndex = (list,index) -> index < list.size() ? list.get(index) : 0;
-    private final BiPredicate<Integer, Integer> isFirstCounterIncremental = (firstNum, secondNum) -> firstNum <= secondNum;
-    private final BiPredicate<Integer, Integer> isCounterReachThreshold = (counter, threshold) -> counter >= threshold;
-    private final BiPredicate<Integer, Integer> isSecondCounterReachedThreshold = this.isCounterReachThreshold::test;
 
-    private final BiPredicate<Integer, Integer> isFirstCounterReachedThreshold = this.isCounterReachThreshold::test;
-    private final Predicate<LinkedList<Integer>> isListEmpty = AbstractCollection::isEmpty;
+    private final Predicate<ListNode> isNodeNull = (node) -> node == null;
+    private final BiPredicate<ListNode, ListNode> tillBothNodesAreNotNull = (node1, node2) ->
+            this.isNodeNull.negate().test(node1) && this.isNodeNull.negate().test(node2);
 
-    public LinkedList<Integer> mergeTwoList(LinkedList<Integer> input_1, LinkedList<Integer> input_2) {
-        final LinkedList<Integer> output = new LinkedList<>();
-
-        int firstCounter = 0;
-        int secondCounter = 0;
-
-        while(this.isFirstCounterReachedThreshold.negate().test(firstCounter, (input_1.size())) ||
-            this.isSecondCounterReachedThreshold.negate().test(secondCounter, (input_2.size()))){
-            int firstNum = this.getNumberFromIndex.apply(input_1, firstCounter);
-            int secondNum = this.getNumberFromIndex.apply(input_2,secondCounter);
-
-            if(this.isListEmpty.negate().test(input_1) && this.isFirstCounterIncremental.test(firstNum, secondNum)){
-                output.add(firstNum);
-                firstCounter++;
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode headNode = dummy;
+        while (this.tillBothNodesAreNotNull.test(l1,l2)) {
+            if (l1.val < l2.val) {
+                dummy.next = l1;
+                l1 = l1.next;
+            } else {
+                dummy.next = l2;
+                l2 = l2.next;
             }
-
-           if(this.isListEmpty.negate().test(input_2)){
-               output.add(secondNum);
-               secondCounter++;
-           }
+            dummy = dummy.next;
         }
 
-        return output;
+        if (l1 != null) {
+            dummy.next = l1;
+        } else {
+            dummy.next = l2;
+        }
+        return headNode.next;
+    }
+
+    public static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("ListNode: { val: %d, next : %s}", val, next);
+        }
     }
 }
+
+
+//    private final BiFunction<LinkedList<Integer>, Integer, Integer> getNumberFromIndex = (list,index) -> index < list.size() ? list.get(index) : 0;
+//    private final BiPredicate<Integer, Integer> isFirstCounterIncremental = (firstNum, secondNum) -> firstNum <= secondNum;
+//    private final BiPredicate<Integer, Integer> isCounterReachThreshold = (counter, threshold) -> counter >= threshold;
+//    private final BiPredicate<Integer, Integer> isSecondCounterReachedThreshold = this.isCounterReachThreshold::test;
+//
+//    private final BiPredicate<Integer, Integer> isFirstCounterReachedThreshold = this.isCounterReachThreshold::test;
+//    private final Predicate<LinkedList<Integer>> isListEmpty = AbstractCollection::isEmpty;
+//
+//    public LinkedList<Integer> mergeTwoList(LinkedList<Integer> input_1, LinkedList<Integer> input_2) {
+//        final LinkedList<Integer> output = new LinkedList<>();
+//
+//        int firstCounter = 0;
+//        int secondCounter = 0;
+//
+//        while(this.isFirstCounterReachedThreshold.negate().test(firstCounter, (input_1.size())) ||
+//            this.isSecondCounterReachedThreshold.negate().test(secondCounter, (input_2.size()))){
+//            int firstNum = this.getNumberFromIndex.apply(input_1, firstCounter);
+//            int secondNum = this.getNumberFromIndex.apply(input_2,secondCounter);
+//
+//            if(this.isListEmpty.negate().test(input_1) && this.isFirstCounterIncremental.test(firstNum, secondNum)){
+//                output.add(firstNum);
+//                firstCounter++;
+//            }
+//
+//           if(this.isListEmpty.negate().test(input_2)){
+//               output.add(secondNum);
+//               secondCounter++;
+//           }
+//        }
+//
+//        return output;
+//    }

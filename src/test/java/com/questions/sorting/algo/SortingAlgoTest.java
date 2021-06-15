@@ -1,6 +1,6 @@
 package com.questions.sorting.algo;
 
-import com.questions.sorting.algo.impl.BubbleSort;
+import com.questions.sorting.algo.impl.InsertionSort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,7 +22,7 @@ public class SortingAlgoTest {
 
     @BeforeEach
     private void setUp(){
-        sortingAlgo = new BubbleSort();
+        sortingAlgo = new InsertionSort();
     }
 
     @ParameterizedTest
