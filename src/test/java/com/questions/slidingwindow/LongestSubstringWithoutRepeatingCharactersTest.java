@@ -1,5 +1,6 @@
-package com.questions.simple;
+package com.questions.slidingwindow;
 
+import com.questions.simple.LongestSubstringWithoutRepeatingCharacters;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,7 @@ public class LongestSubstringWithoutRepeatingCharactersTest {
 
     @ParameterizedTest
     @DisplayName("LongestCommonPrefix should ")
-    @CsvSource(value = {"abcabcbb:3", "bbbbb:1", "pwwkew:3", "abcabcbbabcabcbbabcabcbb:3",":0", "' ':1"}, delimiter = ':')
+    @CsvSource(value = {"abcabcbb:3", "bbbbb:1", "pwwkew:3", "abcabcbbabcabcbbabcabcbb:3",":0", "' ':1",  "'   ':1"}, delimiter = ':')
     public void testLongestCommonPrefix(String input, int output){
         Assertions.assertEquals(output, this.obj.lengthOfLongestSubstring(input));
     }
