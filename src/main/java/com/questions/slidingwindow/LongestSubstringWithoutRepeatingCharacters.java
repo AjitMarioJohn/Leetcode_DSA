@@ -30,9 +30,10 @@ Constraints:
 0 <= s.length <= 5 * 104
 s consists of English letters, digits, symbols and spaces.
 */
-package com.questions.simple;
+package com.questions.slidingwindow;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -104,86 +105,22 @@ import java.util.Optional;
  * https://youtu.be/XZIzesGjV68
  */
 public class LongestSubstringWithoutRepeatingCharacters {
-    public int lengthOfLongestSubstring(String str) {
-        return Optional.ofNullable(str).map(s -> {
-            Map<Character, Integer> map = new HashMap<>();
-            int i = 0;
-            int j = 0;
-            int max = 0;
-            while(j < s.length()){
-                map.put(s.charAt(j), map.getOrDefault(s.charAt(j), 0) + 1);
-                if(map.size() == j - i + 1){
-                    max = Math.max(max, j - i + 1);
-                    j++;
-                }
-                else if(map.size() < j - i + 1){
-                    while(map.size() < j - i + 1){
-                        map.put(s.charAt(i), map.get(s.charAt(i)) - 1);
-                        if(map.get(s.charAt(i)) == 0) map.remove(s.charAt(i));
-                        i++;
-                    }
-                    j++;
-                }
+    public int lengthOfLongestSubstring(String str, int k) {
+        if (Objects.isNull(str) || str.trim().isEmpty()) {
+            return 0;
+        }
+        int lengthOfLongestSubstring = Integer.MIN_VALUE;
+        final Map<Character, Integer> letterTrack = new HashMap<>();
+        int windowStart = 0;
+        for (int windowEnd = 0; windowEnd < str.length(); windowEnd++) {
+            char letter = str.charAt(windowEnd);
+            if (Objects.isNull(letterTrack.get(letter))) {
+                letterTrack.put(letter, 1);
+            }else if (Objects.nonNull(letterTrack.get(letter)) || ((windowEnd-windowStart) >= k)) {
+                lengthOfLongestSubstring = Math.max(lengthOfLongestSubstring, str.substring (windowStart, (windowEnd)).length());
+                windowStart = windowEnd;
             }
-            return max;
-        }).orElse(0);
+        }
+        return lengthOfLongestSubstring;
     }
 }
-//public class LongestSubstringWithoutRepeatingCharacters {
-//    String longestStr = "";
-//    public int lengthOfLongestSubstring(String input) {
-//        return this.longestSubstring.apply(input);
-//    }
-//
-//    private Function<String, Integer> longestSubstring = (str) -> Optional.ofNullable(str).map(this.uniqueSubstrings).orElse(Stream.empty()).max(Comparator.comparingInt(String::length)).orElse("").length();
-//
-//    private Function<String, Stream<String>> uniqueSubstrings = (str) -> {
-//        final List<String> strList = new ArrayList<>();
-//        str.chars().mapToObj(this.convertToString).forEach(indexStr -> {
-//            if(this.containsStringInLongestString.test(indexStr)){
-//                strList.add(longestStr);
-//                longestStr = indexStr;
-//                return;
-//            }
-//            longestStr = longestStr+indexStr;
-//        });
-//        return strList.stream();
-//    };
-//
-//    private IntFunction<String> convertToString = num -> Character.toString((char)num);
-//
-//    private Predicate<String> containsStringInLongestString =  (str) -> longestStr.contains(str);
-//}
-
-//        String longestStr = "";
-//        List<String> strList = new ArrayList<>();
-//
-//        for(int i=0; i<input.length(); i++){
-//            String indexStr = Character.toString(input.charAt(i));
-//            if(longestStr.contains(indexStr)){
-//                strList.add(longestStr);
-//                longestStr = indexStr;
-//                continue;
-//            }
-//
-//            longestStr = longestStr+indexStr;
-//        }
-//
-//        return strList.stream().max(Comparator.comparingInt(String::length)).get().length();
-//        Set<Character> charSet = new HashSet<>();
-//        String  currentLongestString = "";
-//        String  finalSubStr = "";
-//        for(int i=0;i<input.length();i++){
-//            Character c = input.charAt(i);
-//            if(charSet.contains(c)){
-//                currentLongestString = "";
-//                charSet.clear();
-//            }
-//            charSet.add(c); //wk
-//            currentLongestString = currentLongestString + c;
-//
-//            if(currentLongestString.length()>finalSubStr.length()){
-//                finalSubStr =  currentLongestString;
-//            }
-//        }
-//        return finalSubStr.length();

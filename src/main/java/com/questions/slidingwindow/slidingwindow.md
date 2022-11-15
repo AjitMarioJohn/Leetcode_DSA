@@ -18,4 +18,7 @@ finding following
 5. contains
 
 # resource
+https://zengruiwang.medium.com/sliding-window-technique-360d840d5740
 https://www.youtube.com/watch?v=MK-NZ4hN7rs
+https://www.youtube.com/watch?v=EHCGAZBbB88&list=PL_z_8CaSLPWeM8BDJmIYDaoQ5zuwyxnfj
+https://medium.com/techie-delight/top-problems-on-sliding-window-technique-8e63f1e2b1fa
