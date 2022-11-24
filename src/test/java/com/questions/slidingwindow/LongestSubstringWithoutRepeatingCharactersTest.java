@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.NullSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LongestSubstringWithoutRepeatingCharactersTest {
+class LongestSubstringWithoutRepeatingCharactersTest {
 
     static LongestSubstringWithoutRepeatingCharacters obj;
 
@@ -21,19 +21,19 @@ public class LongestSubstringWithoutRepeatingCharactersTest {
     @ParameterizedTest
     @DisplayName("LongestCommonPrefix should ")
     @CsvSource(value = {"abcabcbb:3", "bbbbb:1", "pwwkew:3", "abcabcbbabcabcbbabcabcbb:3",":0"}, delimiter = ':')
-    public void testLongestCommonPrefix(String input, int output){
+    void testLongestCommonPrefix(String input, int output){
         assertThat(this.obj.lengthOfLongestSubstring(input,3)).isEqualTo(output);
     }
 
     @ParameterizedTest
     @NullSource
-    public void testLongestCommonPrefixForNull(String input){
-        assertThat(this.obj.lengthOfLongestSubstring(input,3)).isEqualTo(0);
+    void testLongestCommonPrefixForNull(String input){
+        assertThat(this.obj.lengthOfLongestSubstring(input,3)).isZero();
     }
 
     @ParameterizedTest
     @EmptySource
-    public void testLongestCommonPrefixForEmpty(String input){
-        assertThat(this.obj.lengthOfLongestSubstring(input,3)).isEqualTo(0);
+    void testLongestCommonPrefixForEmpty(String input){
+        assertThat(this.obj.lengthOfLongestSubstring(input,3)).isZero();
     }
 }

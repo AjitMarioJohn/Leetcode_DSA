@@ -34,7 +34,6 @@ package com.questions.slidingwindow;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * So, the prerequisit of this problem is Sliding Window, if you know then it's a plus point. But, if you don't know don't worry I'll try to teach you.
@@ -117,7 +116,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
             if (Objects.isNull(letterTrack.get(letter))) {
                 letterTrack.put(letter, 1);
             }else if (Objects.nonNull(letterTrack.get(letter)) || ((windowEnd-windowStart) >= k)) {
-                lengthOfLongestSubstring = Math.max(lengthOfLongestSubstring, str.substring (windowStart, (windowEnd)).length());
+                lengthOfLongestSubstring = Math.max(lengthOfLongestSubstring, str.substring(windowStart, (windowEnd)).length());
                 windowStart = windowEnd;
             }
         }
